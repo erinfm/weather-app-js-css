@@ -151,7 +151,6 @@ const fetchWeather = function fetchWeatherFromOpenWeatherMapAPI(latitude, longit
     .then(data => {
       console.log(data);
       // hide initial inputs and display weather data
-      //TODO: Add 'is-hidden' classes to CSS so this works
       inputPage.classList.toggle('is-hidden');
       resultPage.classList.toggle('is-hidden');
       getWeather(data);
@@ -167,7 +166,7 @@ const getWeather = function getWeatherInfoAndDisplay(data) {
   displayCityName();
   getCurrentDate();
   displayCurrentDate();
-  // toggleBackgroundImg();
+  toggleBackgroundImg();
 };
 
 const getWeatherIcon = function getCityWeatherIcon(data) {
@@ -307,35 +306,33 @@ const displayCityName = function displaySelectedCityName() {
   weatherDataContainer.appendChild(cityNameBox);
 };
 
-// const toggleBackgroundImg = function toggleBackgroundImage() {
-//   if (currentTemp < 30) {
-//     weatherPage.classList.remove('has-background-default');
-//     weatherPage.classList.add('has-background-day-cool');
-//     currentBackground = 'has-background-day-cool';
-//   }
-//   if (currentTemp > 30) {
-//     weatherPage.classList.remove('has-background-default');
-//     weatherPage.classList.add('has-background-day-warm');
-//     currentBackground = 'has-background-day-warm';
-//   }
-//   if (
-//     weatherIcon === 'images/Cloud-Fog.svg' ||
-//     weatherIcon === 'images/Cloud-Snow.svg' ||
-//     weatherIcon === 'images/Cloud-Snow-Alt.svg'
-//   ) {
-//     weatherPage.classList.remove('has-background-default');
-//     weatherPage.classList.add('has-background-snow-mist');
-//     currentBackground = 'has-background-snow-mist';
-//   }
-//   if (
-//     weatherIcon === 'images/Cloud-Rain.svg' ||
-//     weatherIcon === 'images/Cloud-Lightning.svg'
-//   ) {
-//     weatherPage.classList.remove('has-background-default');
-//     weatherPage.classList.add('has-background-dark');
-//     currentBackground = 'has-background-dark';
-//   }
-// };
+const toggleBackgroundImg = function toggleBackgroundImage() {
+  if (currentTemp < 30) {
+    resultPage.classList.remove('has-background-default');
+    resultPage.classList.add('has-background-day-cool');
+    currentBackground = 'has-background-day-cool';
+  }
+  if (currentTemp > 30) {
+    resultPage.classList.remove('has-background-default');
+    resultPage.classList.add('has-background-day-warm');
+    resultPage = 'has-background-day-warm';
+  }
+  if (
+    weatherIcon === 'img/snow-icon.png'
+  ) {
+    resultPage.classList.remove('has-background-default');
+    resultPage.classList.add('has-background-snow-mist');
+    currentBackground = 'has-background-snow-mist';
+  }
+  if (
+    weatherIcon === 'img/heavy-rain-icon.png' ||
+    weatherIcon === 'img/storm-icon.png'
+  ) {
+    resultPage.classList.remove('has-background-default');
+    resultPage.classList.add('has-background-dark');
+    currentBackground = 'has-background-dark';
+  }
+};
 
 const onReturnButtonPress = function onReturnButtonPressResetValues() {
   // Remove data elements generated during previous search
@@ -349,8 +346,7 @@ const onReturnButtonPress = function onReturnButtonPressResetValues() {
     datalistSelect.removeChild(datalistSelect.firstChild)
   }
   inputField.value = '';
-  //TODO: Re-add when backgrounds reconfigured
-  // resultPage.classList.remove(`${currentBackground}`);
+  resultPage.classList.remove(`${currentBackground}`);
   resultPage.classList.add('has-background-default');
   inputPage.classList.toggle('is-hidden');
   resultPage.classList.toggle('is-hidden');

@@ -4,6 +4,19 @@
   padding: 0px;
 }
 
+body {
+  font-family: 'Nunito', 'Helvetica', 'Arial', sans-serif
+}
+
+button, input, datalist {
+  font-family : inherit;
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: 2rem
+}
+
 .is-hidden {
   display: none;
 }
@@ -11,4 +24,35 @@
 #datalist {
   display: block;
   color:black;
+}
+
+/* Backgrounds */
+
+.has-background-default {
+  background: 
+  linear-gradient(rgba(39, 7, 82, 1), rgba(65, 19, 126, 1), rgba(192,60,80, 1));
+}
+
+.has-background-day-cool {
+  background: 
+  radial-gradient(circle 80vw at top right, rgb(255, 240, 175), rgba(255, 246, 208, 0.5), rgba(255, 253, 245, 0.2), transparent),
+  linear-gradient(rgba(100, 195, 250, 0.8), rgba(18, 57, 182, 0.8));
+}
+
+.has-background-day-warm {
+  background: 
+  radial-gradient(100vw 60vh at top, rgba(161, 16, 0, 0.4),   rgba(187, 30, 2, 0.3), transparent),
+  linear-gradient(rgba(194, 21, 0, 0.8), rgba(255, 166, 0, 0.8));
+}
+
+.has-background-snow-mist {
+  background: 
+  radial-gradient(100vw 40vh at bottom, rgba(253, 83, 10, 0.6),   rgba(240, 140, 98, 0.5), transparent),
+  linear-gradient(rgba(142, 68, 238, 0.8), rgba(184, 86, 236, 0.8), rgba(240, 140, 98, 0.8));
+}
+
+.has-background-dark {
+  background: 
+  radial-gradient(100vw 60vh at top, rgba(15, 1, 32, 0.4),   rgba(45, 13, 87, 0.4), transparent),
+  linear-gradient(rgba(0, 4, 40, 0.9), rgba(0, 78, 144, 0.9),);
 }
