@@ -4,8 +4,26 @@
   padding: 0px;
 }
 
+
 body {
-  font-family: 'Nunito', 'Helvetica', 'Arial', sans-serif
+  font-family: 'Nunito', 'Helvetica', 'Arial', sans-serif;
+  height:100%
+}
+
+html {
+  height: 100%;
+}
+
+section {
+  height: 100%;
+  color: #fff;
+  padding: 20px;
+  /* // Extra padding at bottom to account for address bar
+  padding: 20px 20px 20vh 20px; */
+  /* @supports (-webkit-appearance:none) {
+    .os-android & {
+      min-height: calc(100vh - 56px);
+    } */
 }
 
 button, input, datalist {
@@ -13,8 +31,27 @@ button, input, datalist {
   font-size: 1rem;
 }
 
-h1 {
-  font-size: 2rem
+#welcomeHeader {
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 3rem;
+}
+
+input {
+  padding: 0.5rem;
+  margin: 1rem 0 0 0;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  background: #eee;
+}
+
+#inputPage {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .is-hidden {
@@ -22,7 +59,7 @@ h1 {
 }
 
 #datalist {
-  display: block;
+  display: inline-block;
   color:black;
 }
 
