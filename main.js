@@ -19,6 +19,7 @@ let weatherIcon = '';
 const inputPage = document.getElementById('inputPage');
 const inputField = document.getElementById('inputField');
 const datalist = document.getElementById('datalist');
+const datalistSelect = document.getElementById('datalistSelect')
 const weatherBtn = document.getElementById('weatherBtn');
 const resultPage = document.getElementById('resultPage');
 const resultContainer = document.getElementById('resultContainer');
@@ -32,6 +33,7 @@ inputField.addEventListener('input', () => onInput());
 inputField.addEventListener('keydown', e => {
   // Check if key pressed is return key
   if (e.keyCode === 13) {
+    console.log('searching-input')
     inputValue = inputField.value.toUpperCase();
     // If no country yet specified, get city/country data from API first, else get coordinates of location
     if (inputValue.includes(',')) getCoordinates();
@@ -39,8 +41,16 @@ inputField.addEventListener('keydown', e => {
   }
 });
 
+// If user picks a city from the datalist select element, the input field is updated accordingly
+datalistSelect.addEventListener('click', e => {
+  console.log(e.target.value)
+  inputField.value = e.target.value
+  onInput()
+})
+
 weatherBtn.addEventListener('click', e => {
-  e.preventDefault();
+  console.log('searching-button')
+  // e.preventDefault();
   inputValue = inputField.value.toUpperCase();
   // If no country yet specified, get city/country data from API first, else get coordinates of location
   if (inputValue.includes(',')) getCoordinates();
@@ -51,7 +61,7 @@ searchAgainBtn.addEventListener('click', () => onReturnButtonPress());
 
 const onInput = function onInputByUser() {
   const val = document.getElementById('inputField').value;
-  const opts = document.getElementById('datalist').childNodes;
+  const opts = document.getElementById('datalistSelect').childNodes;
   for (let i = 0; i < opts.length; i += 1) {
     if (opts[i].value === val) {
       // An item was selected from the list!
@@ -67,11 +77,13 @@ const onInput = function onInputByUser() {
 };
 
 const getCoordinates = function getCoordinatesFromAPI() {
+  console.log('getcoordinates')
   fetch(
     `http://geocoder.api.here.com/6.2/geocode.json?locationid=${selectedCityId}&jsonattributes=1&gen=9&app_id=${hereAPIId}&app_code=${hereAPICode}`
   )
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       const latitude =
         data.response.view['0'].result['0'].location.displayPosition.latitude;
       const longitude =
@@ -82,6 +94,7 @@ const getCoordinates = function getCoordinatesFromAPI() {
 };
 
 const getCityData = function getCityDataFromAPI() {
+  console.log('getCityData')
   // Make GET request to HERE API for place data matching user input
   fetch(
     `http://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=${hereAPIId}&app_code=${hereAPICode}&resultType=areas&language=en&maxresults=5&query=${inputValue}`
@@ -100,7 +113,7 @@ const getCityData = function getCityDataFromAPI() {
 const showCities = function showCitiesInDropdown(responseData) {
   const duplicatePreventer = [];
   // Remove all datalist items from previous searches first
-  while (datalist.firstChild) datalist.removeChild(datalist.firstChild);
+  while (datalistSelect.firstChild) datalistSelect.removeChild(datalistSelect.firstChild);
   responseData.forEach(data => {
     // If data doesn't contain a city name, disregard it
     if (data.address.city) {
@@ -118,8 +131,9 @@ const showCities = function showCitiesInDropdown(responseData) {
         option.className = 'locationOption';
         option.id = data.locationId;
         option.value = fullPlacename;
+        option.innerText = fullPlacename;
         // Add the <option> element to the <datalist>
-        datalist.appendChild(option);
+        datalistSelect.appendChild(option);
         // Add country to array so same city isn't shown twice
         duplicatePreventer.push(countryName);
         // Add location ID to locationIdArray
@@ -324,12 +338,15 @@ const displayCityName = function displaySelectedCityName() {
 // };
 
 const onReturnButtonPress = function onReturnButtonPressResetValues() {
-  // Remove previously weather data elements generated during previous search
-  while (resultContainer.firstChild) {
-    resultContainer.removeChild(resultContainer.firstChild);
+  // Remove data elements generated during previous search
+  while (tempIconContainer.firstChild) {
+    tempIconContainer.removeChild(tempIconContainer.firstChild);
   }
   while (weatherDataContainer.firstChild) {
     weatherDataContainer.removeChild(weatherDataContainer.firstChild);
+  }
+  while (datalistSelect.firstChild) {
+    datalistSelect.removeChild(datalistSelect.firstChild)
   }
   inputField.value = '';
   //TODO: Re-add when backgrounds reconfigured

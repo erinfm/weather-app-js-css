@@ -16,18 +16,19 @@
     <h1>How's the weather today?</h1>
     <input id="inputField" name="cityInput" type="text" placeholder="Weather in..." autofocus="autofocus"
       list="datalist">
-    <datalist id="datalist"></datalist>
+
+    <datalist id="datalist"><select id="datalistSelect"></select></datalist>
 
     <button id="weatherBtn">Get Weather</button>
   </section>
 
-  <section id="resultPage">
+  <section id="resultPage" class="is-hidden">
     <div id="resultContainer">
       <div id="tempIconContainer">
-        <p>Temp Icon</p>
+
       </div>
       <div id="weatherDataContainer">
-        <p>Weather Data</p>
+
       </div>
       <div id="searchAgainBtnContainer">
         <button id="searchAgainBtn">Search Again</button>
