@@ -2,6 +2,8 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 
+//TODO: Change functions to arrow functions
+
 const hereAPICode = config.hereAPICode;
 const hereAPIId = config.hereAPIId;
 const OWMAPIKey = config.OWMAPIKey;
@@ -27,6 +29,7 @@ const tempIconContainer = document.getElementById('tempIconContainer');
 const weatherDataContainer = document.getElementById('weatherDataContainer');
 const searchAgainBtnContainer = document.getElementById('searchAgainBtnContainer');
 const searchAgainBtn = document.getElementById('searchAgainBtn');
+const branchList = document.getElementById('branchList')
 
 inputField.addEventListener('input', () => onInput());
 
@@ -42,11 +45,19 @@ inputField.addEventListener('keydown', e => {
 });
 
 // If user picks a city from the datalist select element, the input field is updated accordingly
-datalistSelect.addEventListener('click', e => {
+// datalistSelect.addEventListener('click', e => {
+//   console.log(e.target.value)
+//   inputField.value = e.target.value
+//   onInput()
+// })
+
+//TODO: TEMP- PRACTICE USING BRANCHLIST INSTEAD OF DATALIST
+branchList.addEventListener('click', e => {
   console.log(e.target.value)
   inputField.value = e.target.value
   onInput()
 })
+
 
 weatherBtn.addEventListener('click', e => {
   console.log('searching-button')
@@ -59,9 +70,37 @@ weatherBtn.addEventListener('click', e => {
 
 searchAgainBtn.addEventListener('click', () => onReturnButtonPress());
 
+// const onInput = function onInputByUser() {
+//   const val = document.getElementById('inputField').value;
+//   const opts = document.getElementById('datalistSelect').childNodes;
+//   for (let i = 0; i < opts.length; i += 1) {
+//     if (opts[i].value === val) {
+//       // An item was selected from the list!
+//       selectedCity = opts[i].value
+//         .toLowerCase()
+//         .split(' ')
+//         .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+//         .join(' ');
+//       selectedCityId = opts[i].id;
+//       break;
+//     }
+//   }
+// };
+
+// Catch when user is using keyboard navigation, and show outlines accordingly
+function handleKeyboardNav(e) {
+  if (e.keyCode === 9) {
+    document.body.classList.add('keyboard-nav');
+    window.removeEventListener('keydown', handleKeyboardNav);
+  }
+}
+
+window.addEventListener('keydown', handleKeyboardNav);
+
+// TODO: TEMP- PRACTICE USING BRANCHLIST INSTEAD OF DATALIST
 const onInput = function onInputByUser() {
   const val = document.getElementById('inputField').value;
-  const opts = document.getElementById('datalistSelect').childNodes;
+  const opts = document.getElementById('branchList').childNodes;
   for (let i = 0; i < opts.length; i += 1) {
     if (opts[i].value === val) {
       // An item was selected from the list!
@@ -93,7 +132,7 @@ const getCoordinates = function getCoordinatesFromAPI() {
     .catch(e => console.log('Error found!', e));
 };
 
-const getCityData = function getCityDataFromAPI() {
+function getCityData() {
   console.log('getCityData')
   // Make GET request to HERE API for place data matching user input
   fetch(
@@ -110,10 +149,45 @@ const getCityData = function getCityDataFromAPI() {
 };
 
 // Show cities that match user input in dropdown
-const showCities = function showCitiesInDropdown(responseData) {
+// const showCities = function showCitiesInDropdown(responseData) {
+//   const duplicatePreventer = [];
+//   // Remove all datalist items from previous searches first
+//   while (datalistSelect.firstChild) datalistSelect.removeChild(datalistSelect.firstChild);
+//   responseData.forEach(data => {
+//     // If data doesn't contain a city name, disregard it
+//     if (data.address.city) {
+//       // Clean up data and edit into 'city, country' format
+//       const cityName = data.address.city.toUpperCase();
+//       const countryName = data.address.country.toUpperCase();
+//       // Add matching, non-duplicate values to datalist
+//       if (
+//         cityName.indexOf(inputValue) !== -1 &&
+//         duplicatePreventer.indexOf(countryName) === -1
+//       ) {
+//         const fullPlacename = `${cityName}, ${countryName}`;
+//         // Create new <option> element
+//         const option = document.createElement('option');
+//         option.className = 'locationOption';
+//         option.id = data.locationId;
+//         option.value = fullPlacename;
+//         option.innerText = fullPlacename;
+//         // Add the <option> element to the <datalist>
+//         datalistSelect.appendChild(option);
+//         // Add country to array so same city isn't shown twice
+//         duplicatePreventer.push(countryName);
+//         // Add location ID to locationIdArray
+//         locationIdArray.push(data.locationId);
+//       }
+//     }
+//   });
+// };
+
+//TODO: TEMP- PRACTICE VERSION USING BRANCH
+// Show cities that match user input in dropdown
+function showCities(responseData) {
   const duplicatePreventer = [];
   // Remove all datalist items from previous searches first
-  while (datalistSelect.firstChild) datalistSelect.removeChild(datalistSelect.firstChild);
+  while (branchList.firstChild) branchList.removeChild(branchList.firstChild);
   responseData.forEach(data => {
     // If data doesn't contain a city name, disregard it
     if (data.address.city) {
@@ -133,7 +207,7 @@ const showCities = function showCitiesInDropdown(responseData) {
         option.value = fullPlacename;
         option.innerText = fullPlacename;
         // Add the <option> element to the <datalist>
-        datalistSelect.appendChild(option);
+        branchList.appendChild(option);
         // Add country to array so same city isn't shown twice
         duplicatePreventer.push(countryName);
         // Add location ID to locationIdArray
@@ -143,7 +217,8 @@ const showCities = function showCitiesInDropdown(responseData) {
   });
 };
 
-const fetchWeather = function fetchWeatherFromOpenWeatherMapAPI(latitude, longitude) {
+
+function fetchWeather(latitude, longitude) {
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${OWMAPIKey}`
   )
@@ -169,7 +244,7 @@ const getWeather = function getWeatherInfoAndDisplay(data) {
   toggleBackgroundImg();
 };
 
-const getWeatherIcon = function getCityWeatherIcon(data) {
+function getWeatherIcon(data) {
   // Get weather type ID from API and show corresponding font awesome icon
   switch (true) {
     // Thunderstorms
@@ -221,13 +296,13 @@ const getWeatherIcon = function getCityWeatherIcon(data) {
   }
 };
 
-const displayWeatherIcon = function displayMatchingWeatherIcon() {
+function displayWeatherIcon() {
   const weatherIconImage = document.createElement('img');
   weatherIconImage.setAttribute('src', `${weatherIcon}`);
   tempIconContainer.appendChild(weatherIconImage);
 };
 
-const getCurrentDate = function getCurrentDateFromUser() {
+function getCurrentDate() {
   const options = {
     weekday: 'long',
     month: 'long',
@@ -239,7 +314,7 @@ const getCurrentDate = function getCurrentDateFromUser() {
   currentDate = `${new Date().toLocaleTimeString('en-GB', options)}`;
 };
 
-const displayCurrentDate = function displayCurrentDateFromUser() {
+function displayCurrentDate() {
   const dateBox = document.createElement('p');
   const dateBoxText = document.createTextNode(`${currentDate}`);
   dateBox.appendChild(dateBoxText);
@@ -253,7 +328,7 @@ const displayCurrentDate = function displayCurrentDateFromUser() {
   weatherDataContainer.appendChild(dateBox);
 };
 
-const displayTemp = function displayCurrentTemperature(data) {
+function displayTemp(data) {
   currentTemp = data.main.temp;
   const tempTextBox = document.createElement('h1');
   const tempText = document.createTextNode(`${Math.round(data.main.temp)}°C`);
@@ -278,7 +353,7 @@ const displayTemp = function displayCurrentTemperature(data) {
   weatherDataContainer.appendChild(tempTextBox);
 };
 
-const displayWeatherDetails = function displayWeatherTypeDetails(data) {
+function displayWeatherDetails(data) {
   const weatherInfoBox = document.createElement('p');
   const weatherInfoText = document.createTextNode(`${data.weather['0'].description}`);
   weatherInfoBox.appendChild(weatherInfoText);
@@ -292,7 +367,7 @@ const displayWeatherDetails = function displayWeatherTypeDetails(data) {
   weatherDataContainer.appendChild(weatherInfoBox);
 };
 
-const displayCityName = function displaySelectedCityName() {
+function displayCityName() {
   const cityNameBox = document.createElement('p');
   const cityNameBoxText = document.createTextNode(`${selectedCity}`);
   cityNameBox.appendChild(cityNameBoxText);
@@ -306,7 +381,7 @@ const displayCityName = function displaySelectedCityName() {
   weatherDataContainer.appendChild(cityNameBox);
 };
 
-const toggleBackgroundImg = function toggleBackgroundImage() {
+function toggleBackgroundImg() {
   if (currentTemp < 30) {
     resultPage.classList.remove('has-background-default');
     resultPage.classList.add('has-background-day-cool');
@@ -334,7 +409,7 @@ const toggleBackgroundImg = function toggleBackgroundImage() {
   }
 };
 
-const onReturnButtonPress = function onReturnButtonPressResetValues() {
+function onReturnButtonPress() {
   // Remove data elements generated during previous search
   while (tempIconContainer.firstChild) {
     tempIconContainer.removeChild(tempIconContainer.firstChild);
@@ -342,8 +417,8 @@ const onReturnButtonPress = function onReturnButtonPressResetValues() {
   while (weatherDataContainer.firstChild) {
     weatherDataContainer.removeChild(weatherDataContainer.firstChild);
   }
-  while (datalistSelect.firstChild) {
-    datalistSelect.removeChild(datalistSelect.firstChild)
+  while (branchList.firstChild) {
+    branchList.removeChild(branchList.firstChild)
   }
   inputField.value = '';
   resultPage.classList.remove(`${currentBackground}`);
