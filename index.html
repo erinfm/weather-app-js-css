@@ -16,14 +16,15 @@
   <section id="inputPage" class="section has-background-default">
     <h1 id="welcomeHeader">How's the weather today?</h1>
     <input id="inputField" name="cityInput" type="text" placeholder="Weather in..." autofocus="autofocus">
+
+    <button id="weatherBtn">Get Weather</button>
     <!--
       list="datalist" -->
 
     <!-- <datalist id="datalist"><select id="datalistSelect"></select></datalist> -->
 
-    <p id="branchList"></p>
 
-    <button id="weatherBtn">Get Weather</button>
+
   </section>
 
   <section id="resultPage" class="section is-hidden">
@@ -40,6 +41,11 @@
 
     </div>
   </section>
+
+  <div class="modal closed" id="modal">
+    <p id="closeModalBtn">✖</p>
+    <p id="cityList"></p>
+  </div>
 </body>
 
 </html>

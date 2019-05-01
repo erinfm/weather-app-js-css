@@ -2,8 +2,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 
-//TODO: Change functions to arrow functions
-
 const hereAPICode = config.hereAPICode;
 const hereAPIId = config.hereAPIId;
 const OWMAPIKey = config.OWMAPIKey;
@@ -29,7 +27,9 @@ const tempIconContainer = document.getElementById('tempIconContainer');
 const weatherDataContainer = document.getElementById('weatherDataContainer');
 const searchAgainBtnContainer = document.getElementById('searchAgainBtnContainer');
 const searchAgainBtn = document.getElementById('searchAgainBtn');
-const branchList = document.getElementById('branchList')
+const cityList = document.getElementById('cityList');
+const modal = document.getElementById('modal');
+const closeModalBtn = document.getElementById('closeModalBtn')
 
 inputField.addEventListener('input', () => onInput());
 
@@ -44,20 +44,21 @@ inputField.addEventListener('keydown', e => {
   }
 });
 
-// If user picks a city from the datalist select element, the input field is updated accordingly
-// datalistSelect.addEventListener('click', e => {
-//   console.log(e.target.value)
-//   inputField.value = e.target.value
-//   onInput()
-// })
-
-//TODO: TEMP- PRACTICE USING BRANCHLIST INSTEAD OF DATALIST
-branchList.addEventListener('click', e => {
+// When user picks a city, the input field is updated to reflect
+cityList.addEventListener('click', e => {
   console.log(e.target.value)
-  inputField.value = e.target.value
+  inputField.value = e.target.value;
+  modal.classList.toggle("closed");
+  inputPage.classList.toggle("darken");
+  inputPage.classList.toggle("unselectable");
   onInput()
 })
 
+closeModalBtn.addEventListener('click', () => {
+  modal.classList.toggle("closed");
+  inputPage.classList.toggle("darken");
+  inputPage.classList.toggle("unselectable");
+})
 
 weatherBtn.addEventListener('click', e => {
   console.log('searching-button')
@@ -70,23 +71,6 @@ weatherBtn.addEventListener('click', e => {
 
 searchAgainBtn.addEventListener('click', () => onReturnButtonPress());
 
-// const onInput = function onInputByUser() {
-//   const val = document.getElementById('inputField').value;
-//   const opts = document.getElementById('datalistSelect').childNodes;
-//   for (let i = 0; i < opts.length; i += 1) {
-//     if (opts[i].value === val) {
-//       // An item was selected from the list!
-//       selectedCity = opts[i].value
-//         .toLowerCase()
-//         .split(' ')
-//         .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-//         .join(' ');
-//       selectedCityId = opts[i].id;
-//       break;
-//     }
-//   }
-// };
-
 // Catch when user is using keyboard navigation, and show outlines accordingly
 function handleKeyboardNav(e) {
   if (e.keyCode === 9) {
@@ -97,10 +81,9 @@ function handleKeyboardNav(e) {
 
 window.addEventListener('keydown', handleKeyboardNav);
 
-// TODO: TEMP- PRACTICE USING BRANCHLIST INSTEAD OF DATALIST
 const onInput = function onInputByUser() {
   const val = document.getElementById('inputField').value;
-  const opts = document.getElementById('branchList').childNodes;
+  const opts = document.getElementById('cityList').childNodes;
   for (let i = 0; i < opts.length; i += 1) {
     if (opts[i].value === val) {
       // An item was selected from the list!
@@ -149,45 +132,10 @@ function getCityData() {
 };
 
 // Show cities that match user input in dropdown
-// const showCities = function showCitiesInDropdown(responseData) {
-//   const duplicatePreventer = [];
-//   // Remove all datalist items from previous searches first
-//   while (datalistSelect.firstChild) datalistSelect.removeChild(datalistSelect.firstChild);
-//   responseData.forEach(data => {
-//     // If data doesn't contain a city name, disregard it
-//     if (data.address.city) {
-//       // Clean up data and edit into 'city, country' format
-//       const cityName = data.address.city.toUpperCase();
-//       const countryName = data.address.country.toUpperCase();
-//       // Add matching, non-duplicate values to datalist
-//       if (
-//         cityName.indexOf(inputValue) !== -1 &&
-//         duplicatePreventer.indexOf(countryName) === -1
-//       ) {
-//         const fullPlacename = `${cityName}, ${countryName}`;
-//         // Create new <option> element
-//         const option = document.createElement('option');
-//         option.className = 'locationOption';
-//         option.id = data.locationId;
-//         option.value = fullPlacename;
-//         option.innerText = fullPlacename;
-//         // Add the <option> element to the <datalist>
-//         datalistSelect.appendChild(option);
-//         // Add country to array so same city isn't shown twice
-//         duplicatePreventer.push(countryName);
-//         // Add location ID to locationIdArray
-//         locationIdArray.push(data.locationId);
-//       }
-//     }
-//   });
-// };
-
-//TODO: TEMP- PRACTICE VERSION USING BRANCH
-// Show cities that match user input in dropdown
 function showCities(responseData) {
   const duplicatePreventer = [];
   // Remove all datalist items from previous searches first
-  while (branchList.firstChild) branchList.removeChild(branchList.firstChild);
+  while (cityList.firstChild) cityList.removeChild(cityList.firstChild);
   responseData.forEach(data => {
     // If data doesn't contain a city name, disregard it
     if (data.address.city) {
@@ -201,20 +149,26 @@ function showCities(responseData) {
       ) {
         const fullPlacename = `${cityName}, ${countryName}`;
         // Create new <option> element
-        const option = document.createElement('option');
+        const option = document.createElement('p');
         option.className = 'locationOption';
         option.id = data.locationId;
         option.value = fullPlacename;
-        option.innerText = fullPlacename;
+        option.innerText = fullPlacename.toLowerCase();
         // Add the <option> element to the <datalist>
-        branchList.appendChild(option);
+        cityList.appendChild(option);
         // Add country to array so same city isn't shown twice
         duplicatePreventer.push(countryName);
         // Add location ID to locationIdArray
         locationIdArray.push(data.locationId);
       }
+
     }
+    console.log('toggle')
+    modal.classList.toggle("closed");
+    inputPage.classList.toggle("darken");
+    inputPage.classList.toggle("unselectable");
   });
+
 };
 
 
@@ -417,8 +371,8 @@ function onReturnButtonPress() {
   while (weatherDataContainer.firstChild) {
     weatherDataContainer.removeChild(weatherDataContainer.firstChild);
   }
-  while (branchList.firstChild) {
-    branchList.removeChild(branchList.firstChild)
+  while (cityList.firstChild) {
+    cityList.removeChild(cityList.firstChild)
   }
   inputField.value = '';
   resultPage.classList.remove(`${currentBackground}`);
