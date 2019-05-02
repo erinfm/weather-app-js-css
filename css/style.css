@@ -6,7 +6,8 @@
 
 
 body {
-  font-family: 'Nunito', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Muli', 'Helvetica', 'Arial', sans-serif;
+  
   height:100%
 }
 
@@ -21,10 +22,15 @@ html {
   height: 100%;
 }
 
+h1 {
+  font-weight: 300;
+}
+
 section {
   height: 100%;
   color: #fff;
   padding: 20px;
+  font-weight: 300;
   /* // Extra padding at bottom to account for address bar
   padding: 20px 20px 20vh 20px; */
   /* @supports (-webkit-appearance:none) {
@@ -34,13 +40,12 @@ section {
 }
 
 button, input, datalist {
-  font-family : inherit;
+  font-family : 'Muli', Arial, Helvetica, sans-serif;
   font-size: 1rem;
 }
 
 #welcomeHeader {
-  font-weight: 400;
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   line-height: 3rem;
 }
 
@@ -49,6 +54,7 @@ input {
   margin: 1rem 0 1rem 0;
   border-radius: 10px;
   border: 2px solid #ddd;
+  width: 100%;
 }
 
 select {
@@ -71,10 +77,12 @@ input:focus {
   transform: translate(-50%, -50%);
   padding: 2rem;
   width: 300px;
-  height: 200px;
+  min-height: 80px;
+  max-height: 200px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08);
+  border: 3px solid #AA00FF;
 }
 
 .modal.closed {
@@ -95,6 +103,7 @@ input:focus {
 #inputPage {
   display: flex;
   justify-content: center;
+ 
   flex-direction: column;
 }
 
@@ -109,7 +118,6 @@ input:focus {
   
   position: relative;
   font-size: 1.25rem;
-  font-weight: 700;
   cursor: pointer;
   text-transform: capitalize;
   width: 100%;
@@ -136,7 +144,7 @@ input:focus {
   right: 0;
   top:0;
   cursor: pointer;
-  margin: 1rem;
+  margin: 0.5rem;
   height: 2rem;
   width: 2rem;
   font-size: 1.5rem;
@@ -150,17 +158,125 @@ input:focus {
 #weatherBtn {
   border-radius: 10px;
   padding: 0.75rem;
-  margin: 0 4rem;
+  width: 100%;
   font-size: 1.25rem;
-  font-weight: 700;
   color: white;
   background: #AA00FF;
   border: 2px solid rgb(143, 1, 214);
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08);
-  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.1s ease;
 }
 
-/* Backgrounds */
+#weatherBtn:hover{
+  background: rgb(154, 0, 231);
+  border: 2px solid rgb(120, 1, 180);
+}
+
+#resultContainer{
+  display:flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.resultTempText {
+  font-size: 6rem;
+  line-height: 5rem;
+  margin-bottom: 2rem;
+  font-weight: 200;
+  
+
+}
+
+#weatherTextContainer {
+  margin-left: 0.25rem;
+  width: 300px;
+}
+
+#tempAndText {
+  display:flex;
+  align-items: center;
+}
+
+.weatherInfo {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+}
+
+.resultCityName {
+
+  font-size: 1rem;
+}
+
+.resultDate {
+  font-size: 1rem;
+}
+
+
+#searchAgainBtn {
+  position:relative;
+  font-size: 1rem;
+  color: white;
+background: none;
+border: none;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+#searchAgainBtn:hover{
+  color: #AA00FF;
+}
+
+#backArrow {
+  position: absolute;
+  left: 1rem;
+  font-size: 2rem;
+}
+
+#searchAgainText {
+  position: absolute;
+  top: 0.81rem;
+  left: 2rem;
+}
+
+#tempIconContainer {
+  height: 80px;
+  width: 80px;
+}
+
+img {
+  filter: brightness(0) invert(1);
+  height: 80px;
+  width: 80px;
+}
+
+.has-background-default {
+  background: 
+  linear-gradient(rgb(33, 6, 68), rgb(52, 15, 100) , 90%, rgb(170, 0, 255) );
+}
+  
+  .has-background-day-cool {
+    background: 
+    linear-gradient(rgb(33, 6, 68), rgb(52, 15, 100) , 90%, #2962ff );
+  }
+  
+  .has-background-day-warm {
+    background: 
+    linear-gradient(rgb(33, 6, 68), rgb(52, 15, 100) , 90%, #ff6d00 );
+  }
+  
+  .has-background-snow-mist {
+    background: 
+    linear-gradient(rgb(33, 6, 68), rgb(52, 15, 100) , 90%, #c51162 );
+  }
+  
+  .has-background-dark {
+    background: 
+    linear-gradient(rgb(33, 6, 68), rgb(52, 15, 100) , 90%, #304ffe );
+  }
+
+/* Backgrounds
 
 .has-background-default {
   background: 
@@ -190,4 +306,30 @@ input:focus {
   background: 
   radial-gradient(100vw 60vh at top, rgba(15, 1, 32, 0.4),   rgba(45, 13, 87, 0.4), transparent),
   linear-gradient(rgba(0, 4, 40, 0.9), rgba(0, 78, 144, 0.9),);
+} */
+
+@media only screen and (min-width : 480px) {
+
+  #inputPage {
+    align-items: flex-start;
+  }
+
+  #inputField {
+    width: 600px;
+    padding: 1rem 2rem;
+  }
+  #weatherBtn {
+    margin: 0;
+    padding: 1rem 2rem;
+    height: 100%;
+    width: 200px;
+    
+  }
+
+  .desktop-alongside {
+    display:flex;
+
+
+  }
+
 }

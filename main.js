@@ -24,7 +24,9 @@ const weatherBtn = document.getElementById('weatherBtn');
 const resultPage = document.getElementById('resultPage');
 const resultContainer = document.getElementById('resultContainer');
 const tempIconContainer = document.getElementById('tempIconContainer');
-const weatherDataContainer = document.getElementById('weatherDataContainer');
+const weatherTextContainer = document.getElementById('weatherTextContainer');
+const tempContainer = document.getElementById('tempContainer');
+const cityDateContainer = document.getElementById('cityDateContainer');
 const searchAgainBtnContainer = document.getElementById('searchAgainBtnContainer');
 const searchAgainBtn = document.getElementById('searchAgainBtn');
 const cityList = document.getElementById('cityList');
@@ -126,7 +128,9 @@ function getCityData() {
       // Extract placename info from JSON
       const responseData = data.suggestions;
       // Run function to show matching cities in datalist dropdown
-      showCities(responseData);
+      if (responseData.length > 0) {
+        showCities(responseData);
+      }
     })
     .catch(e => console.log('Error found!', e));
 };
@@ -161,13 +165,14 @@ function showCities(responseData) {
         // Add location ID to locationIdArray
         locationIdArray.push(data.locationId);
       }
-
     }
-    console.log('toggle')
+  });
+  if (locationIdArray.length > 0) {
+    console.log('opening')
     modal.classList.toggle("closed");
     inputPage.classList.toggle("darken");
     inputPage.classList.toggle("unselectable");
-  });
+  }
 
 };
 
@@ -190,8 +195,9 @@ function fetchWeather(latitude, longitude) {
 const getWeather = function getWeatherInfoAndDisplay(data) {
   getWeatherIcon(data);
   displayWeatherIcon();
-  displayTemp(data);
+
   displayWeatherDetails(data);
+  displayTemp(data);
   displayCityName();
   getCurrentDate();
   displayCurrentDate();
@@ -203,49 +209,49 @@ function getWeatherIcon(data) {
   switch (true) {
     // Thunderstorms
     case data.weather['0'].id > 199 && data.weather['0'].id < 233:
-      weatherIcon = 'img/storm-icon.png';
+      weatherIcon = 'img/storm.png';
       break;
     // Drizzle
     case data.weather['0'].id > 299 && data.weather['0'].id < 322:
-      weatherIcon = 'img/light-rain-icon.png';
+      weatherIcon = 'img/light-rain.png';
       break;
     // Light rain
     case data.weather['0'].id === 500 ||
       data.weather['0'].id === 520 ||
       data.weather['0'].id === 521:
-      weatherIcon = 'img/light-rain-icon.png';
+      weatherIcon = 'img/light-rain.png';
       break;
     // Moderate to heavy rain
     case (data.weather['0'].id > 500 && data.weather['0'].id < 512) ||
       (data.weather['0'].id > 521 && data.weather['0'].id < 532):
-      weatherIcon = 'img/heavy-rain-icon.png';
+      weatherIcon = 'img/heavy-rain.png';
       break;
     // Sleet
     //TODO: Create sleet icon
     case data.weather['0'].id > 610 && data.weather['0'].id < 617:
-      weatherIcon = 'img/snow-icon.png';
+      weatherIcon = 'img/snow.png';
       break;
     // Snow
     case (data.weather['0'].id > 599 && data.weather['0'].id < 603) ||
       (data.weather['0'].id > 619 && data.weather['0'].id < 623):
-      weatherIcon = 'img/snow-icon.png';
+      weatherIcon = 'img/snow.png';
       break;
     // Atmosphere
     //TODO: Create fog icon
     case data.weather['0'].id > 699 && data.weather['0'].id < 782:
-      weatherIcon = 'img/snow-icon.png';
+      weatherIcon = 'img/snow.png';
       break;
     // Light clouds
     case data.weather['0'].id === 801 || data.weather['0'].id === 802:
-      weatherIcon = 'img/light-cloud-icon.png';
+      weatherIcon = 'img/light-cloud.png';
       break;
     // Heavy clouds
     case data.weather['0'].id === 803 || data.weather['0'].id === 804:
-      weatherIcon = 'img/heavy-cloud-icon.png';
+      weatherIcon = 'img/heavy-cloud.png';
       break;
     // Else, clear
     default:
-      weatherIcon = 'img/sunny-icon.png';
+      weatherIcon = 'img/sunny.png';
       break;
   }
 };
@@ -273,38 +279,9 @@ function displayCurrentDate() {
   const dateBoxText = document.createTextNode(`${currentDate}`);
   dateBox.appendChild(dateBoxText);
   dateBox.classList.add(
-    'is-size-6',
-    'is-size-7-mobile',
-    'has-text-white',
-    'has-text-weight-normal',
-    'is-marginless'
+    'resultDate'
   );
-  weatherDataContainer.appendChild(dateBox);
-};
-
-function displayTemp(data) {
-  currentTemp = data.main.temp;
-  const tempTextBox = document.createElement('h1');
-  const tempText = document.createTextNode(`${Math.round(data.main.temp)}°C`);
-
-  tempTextBox.appendChild(tempText);
-  if (tempText.length > 4) {
-    tempTextBox.classList.add(
-      'is-size-2',
-      'has-text-white',
-      'has-text-weight-semibold',
-      'is-marginless'
-    );
-  } else {
-    tempTextBox.classList.add(
-      'is-size-1',
-      'is-size-2-mobile',
-      'has-text-white',
-      'has-text-weight-semibold',
-      'is-marginless'
-    );
-  }
-  weatherDataContainer.appendChild(tempTextBox);
+  cityDateContainer.appendChild(dateBox);
 };
 
 function displayWeatherDetails(data) {
@@ -312,13 +289,27 @@ function displayWeatherDetails(data) {
   const weatherInfoText = document.createTextNode(`${data.weather['0'].description}`);
   weatherInfoBox.appendChild(weatherInfoText);
   weatherInfoBox.classList.add(
-    'is-size-4',
-    'is-size-5-mobile',
-    'has-text-white',
-    'has-text-weight-semibold',
-    'is-marginless'
+    'weatherInfo'
   );
-  weatherDataContainer.appendChild(weatherInfoBox);
+  weatherTextContainer.appendChild(weatherInfoBox);
+};
+
+function displayTemp(data) {
+  currentTemp = data.main.temp;
+  const tempTextBox = document.createElement('h2');
+  const tempText = document.createTextNode(`${Math.round(data.main.temp)}°C`);
+
+  tempTextBox.appendChild(tempText);
+  if (tempText.length > 4) {
+    tempTextBox.classList.add(
+      'resultTempBox'
+    );
+  } else {
+    tempTextBox.classList.add(
+      'resultTempText'
+    );
+  }
+  tempContainer.appendChild(tempTextBox);
 };
 
 function displayCityName() {
@@ -326,13 +317,9 @@ function displayCityName() {
   const cityNameBoxText = document.createTextNode(`${selectedCity}`);
   cityNameBox.appendChild(cityNameBoxText);
   cityNameBox.classList.add(
-    'is-size-6',
-    'is-size-7-mobile',
-    'has-text-white',
-    'has-text-weight-normal',
-    'is-marginless'
+    'resultCityName'
   );
-  weatherDataContainer.appendChild(cityNameBox);
+  cityDateContainer.appendChild(cityNameBox);
 };
 
 function toggleBackgroundImg() {
@@ -344,10 +331,10 @@ function toggleBackgroundImg() {
   if (currentTemp > 30) {
     resultPage.classList.remove('has-background-default');
     resultPage.classList.add('has-background-day-warm');
-    resultPage = 'has-background-day-warm';
+    currentBackground = 'has-background-day-warm';
   }
   if (
-    weatherIcon === 'img/snow-icon.png'
+    weatherIcon === 'img/snow.png'
   ) {
     resultPage.classList.remove('has-background-default');
     resultPage.classList.add('has-background-snow-mist');
@@ -355,7 +342,7 @@ function toggleBackgroundImg() {
   }
   if (
     weatherIcon === 'img/heavy-rain-icon.png' ||
-    weatherIcon === 'img/storm-icon.png'
+    weatherIcon === 'img/storm.png'
   ) {
     resultPage.classList.remove('has-background-default');
     resultPage.classList.add('has-background-dark');
@@ -368,8 +355,14 @@ function onReturnButtonPress() {
   while (tempIconContainer.firstChild) {
     tempIconContainer.removeChild(tempIconContainer.firstChild);
   }
-  while (weatherDataContainer.firstChild) {
-    weatherDataContainer.removeChild(weatherDataContainer.firstChild);
+  while (weatherTextContainer.firstChild) {
+    weatherTextContainer.removeChild(weatherTextContainer.firstChild);
+  }
+  while (tempContainer.firstChild) {
+    tempContainer.removeChild(tempContainer.firstChild);
+  }
+  while (cityDateContainer.firstChild) {
+    cityDateContainer.removeChild(cityDateContainer.firstChild);
   }
   while (cityList.firstChild) {
     cityList.removeChild(cityList.firstChild)

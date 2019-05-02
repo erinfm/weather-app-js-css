@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Weather</title>
-  <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli:200,300" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="config.js"></script>
   <script defer src="main.js"></script>
@@ -15,9 +15,12 @@
 <body>
   <section id="inputPage" class="section has-background-default">
     <h1 id="welcomeHeader">How's the weather today?</h1>
-    <input id="inputField" name="cityInput" type="text" placeholder="Weather in..." autofocus="autofocus">
 
-    <button id="weatherBtn">Get Weather</button>
+    <div class="desktop-alongside">
+      <input id="inputField" name="cityInput" type="text" placeholder="Weather in..." autofocus="autofocus">
+
+      <button id="weatherBtn">Get Weather</button>
+    </div>
     <!--
       list="datalist" -->
 
@@ -27,17 +30,22 @@
 
   </section>
 
-  <section id="resultPage" class="section is-hidden">
+  <section id="resultPage" class="section is-hidden has-background-default">
+    <div id="searchAgainBtn">
+      <span id="backArrow">&#8249</span><span id="searchAgainText">Search Again</span>
+    </div>
     <div id="resultContainer">
-      <div id="tempIconContainer">
+
+      <div id="tempAndText">
+        <div id="tempIconContainer">
+        </div>
+        <div id="weatherTextContainer"></div>
+      </div>
+      <div id="tempContainer"></div>
+      <div id="cityDateContainer">
 
       </div>
-      <div id="weatherDataContainer">
 
-      </div>
-      <div id="searchAgainBtnContainer">
-        <button id="searchAgainBtn">Search Again</button>
-      </div>
 
     </div>
   </section>
