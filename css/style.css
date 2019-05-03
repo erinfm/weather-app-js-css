@@ -51,7 +51,7 @@ button, input, datalist {
 
 input {
   padding: 0.75rem;
-  margin: 1rem 0 1rem 0;
+  margin: 1rem 0;
   border-radius: 10px;
   border: 2px solid #ddd;
   width: 100%;
@@ -308,28 +308,60 @@ img {
   linear-gradient(rgba(0, 4, 40, 0.9), rgba(0, 78, 144, 0.9),);
 } */
 
-@media only screen and (min-width : 480px) {
+@media only screen and (min-width : 650px) {
+  html {
+    font-size: 1.25rem;
+  }
 
+  #welcomeHeader {
+  }
   #inputPage {
     align-items: flex-start;
   }
 
   #inputField {
-    width: 600px;
-    padding: 1rem 2rem;
+    
+    width: 400px;
+    height: 70%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 2px solid rgb(143, 1, 214);
+    border-right: none;
   }
+
+  input:focus {
+    box-shadow: none;
+  }
+  
   #weatherBtn {
     margin: 0;
-    padding: 1rem 2rem;
-    height: 100%;
+    margin: 1rem 0;
+    height: 70%;
     width: 200px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.75px;
     
   }
 
   .desktop-alongside {
     display:flex;
-
-
   }
+
+  #inputPage {
+    padding-left: 2rem;
+  }
+
+  #resultContainer {
+    margin-left: 2rem;
+  }
+
+  #searchAgainBtn {
+    margin-left: 1rem;
+  }
+
+
 
 }
