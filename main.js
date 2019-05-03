@@ -2,9 +2,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 
-const hereAPICode = config.hereAPICode;
-const hereAPIId = config.hereAPIId;
-const OWMAPIKey = config.OWMAPIKey;
+const hereAPICode = process.env.hereAPICode;
+const hereAPIId = process.env.APIId;
+const OWMAPIKey = process.env.OWMAPIKey;
 
 const locationIdArray = [];
 
